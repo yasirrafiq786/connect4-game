@@ -1,27 +1,38 @@
-import React from 'react';
+import React, {useState} from 'react';
 import newBoard from '../helpers/newBoard';
+import Square from './Square';
 
 const Board = () => {
-  const renderNewBoard = newBoard().map((row) => {
+  const [start, setStart] = useState(false);
+  const [player1, setPlayer1] = useState(false);
+
+  const changePlayer = () => {
+    setPlayer1(!player1);
+  };
+
+  const renderNewBoard = newBoard().map((row, i) => {
     return (
       <tr>
-        {row.map((col) => (
-          <th
-            style={{
-              height: '50px',
-              width: '50px',
-              border: '1px solid black',
-            }}
-          ></th>
+        {row.map((col, j) => (
+          <Square
+            X={`${i}`}
+            Y={`${j}`}
+            start={start}
+            player1={player1}
+            changePlayer={changePlayer}
+          />
         ))}
       </tr>
     );
   });
 
   return (
-    <table style={{margin: '5em auto', borderCollapse: 'collapse'}}>
-      {renderNewBoard}
-    </table>
+    <React.Fragment>
+      <table style={{margin: '5em auto', borderCollapse: 'collapse'}}>
+        <tbody>{renderNewBoard}</tbody>
+      </table>
+      <button onClick={() => setStart(true)}>Start</button>
+    </React.Fragment>
   );
 };
 
