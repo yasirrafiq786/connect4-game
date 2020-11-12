@@ -1,37 +1,42 @@
 import React, {useState} from 'react';
-import newBoard from '../helpers/newBoard';
-import Square from './Square';
+import matrixGenerator from '../helpers/matrixGenerator';
+import Column from './Column';
 
 const Board = () => {
-  const [start, setStart] = useState(false);
-  const [player1, setPlayer1] = useState(false);
+  const [currentPlayer, setCurrentPlayer] = useState('');
 
-  const changePlayer = () => {
-    setPlayer1(!player1);
+  const startGame = () => {
+    console.log('yes');
+    setCurrentPlayer('1');
   };
 
-  const renderNewBoard = newBoard().map((row, i) => {
+  const togglePlayer = (player) => {
+    if (currentPlayer === '1') {
+      setCurrentPlayer('2');
+    } else if (currentPlayer === '2') {
+      setCurrentPlayer('1');
+    } else {
+      return;
+    }
+  };
+
+  const renderNewBoard = matrixGenerator().map((col, i) => {
     return (
-      <tr>
-        {row.map((col, j) => (
-          <Square
-            X={`${i}`}
-            Y={`${j}`}
-            start={start}
-            player1={player1}
-            changePlayer={changePlayer}
-          />
-        ))}
-      </tr>
+      <Column
+        key={i}
+        col={col}
+        Y={i}
+        currentPlayer={currentPlayer}
+        togglePlayer={togglePlayer}
+      />
     );
   });
 
   return (
     <React.Fragment>
-      <table style={{margin: '5em auto', borderCollapse: 'collapse'}}>
-        <tbody>{renderNewBoard}</tbody>
-      </table>
-      <button onClick={() => setStart(true)}>Start</button>
+      <div style={{display: 'flex', padding: '24px'}}>{renderNewBoard}</div>
+
+      <button onClick={() => startGame()}>Start</button>
     </React.Fragment>
   );
 };
