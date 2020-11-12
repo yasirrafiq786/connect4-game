@@ -1,23 +1,26 @@
 import React, {useRef, useState} from 'react';
 
 const Square = (props) => {
+  const [clicked, setClicked] = useState(false);
   const square = useRef();
 
   const colorChanger = () => {
-    if (props.currentPlayer === '1') {
-      square.current.style.backgroundColor = 'red';
-    } else if (props.currentPlayer === '2') {
-      square.current.style.backgroundColor = 'blue';
-    } else {
-      return;
+    if (!clicked) {
+      props.togglePlayer(props.currentPlayer);
+      if (props.currentPlayer === '1') {
+        square.current.style.backgroundColor = 'red';
+      } else if (props.currentPlayer === '2') {
+        square.current.style.backgroundColor = 'blue';
+      } else {
+        return;
+      }
     }
   };
 
   const clickHandler = () => {
-    props.checkEmpty(props.coords[1]);
-    props.togglePlayer(props.currentPlayer);
     props.squareHandler(props.currentPlayer);
     colorChanger();
+    setClicked(true);
     console.log(props.currentPlayer);
   };
 
